@@ -1,4 +1,4 @@
-
+import { PrismaClient } from "@repo/myDB/clients"  //FROM THE DB directory
 
 export default function Home() :JSX.Element {
   return (

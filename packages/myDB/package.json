@@ -1,12 +1,18 @@
 {
   "name": "@repo/myDB",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.1.0"
+  },
+  "exports" : {
+    "./clients"  : "./index.ts"
+  }
 }
