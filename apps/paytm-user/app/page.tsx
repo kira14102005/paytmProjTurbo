@@ -1,6 +1,7 @@
-import { Appbar } from "../../../packages/ui/src/appbar";
+import { Appbar } from "@repo/ui/appbar"
 
-export default function(){
-    return<>
-<Appbar/>    </>
+
+export default function () {
+    return <>
+        <Appbar />    </>
 }

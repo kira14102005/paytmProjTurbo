@@ -32,14 +32,14 @@ export const NEXTAUTH = {
                 })
                 console.log(user)
                 if (user) {
-                    const passwordValidation = await bcrypt.compare(hasedPass, user.password);
-                    if (passwordValidation) {
+ // Compare plain password with stored hash
+ const passwordValidation = await bcrypt.compare(credentials.password, user.password);                    if (passwordValidation) {
                         return {
                             id: user.id.toString(),
                             email: user.email
                         }
                     }
-                    console.log("PASSWORD MISMATCh")
+                    console.error("PASSWORD MISMATCh")
                     return null
                 }
                 else {
