@@ -1,4 +1,5 @@
-import { NEXTAUTH } from "../../../config";
-
-export const GET  = NEXTAUTH
-export const POST  = NEXTAUTH
+import NextAuth from "next-auth";
+import { NEXTAUTH } from "../../../lib/auth";
+const handler  = NextAuth(NEXTAUTH)
+export const GET  =handler
+export const POST  = handler

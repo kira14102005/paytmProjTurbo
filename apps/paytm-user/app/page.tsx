@@ -1,8 +1,6 @@
-import { PrismaClient } from "@repo/myDB/clients"  //FROM THE DB directory
+import { Appbar } from "./components/appbar";
 
-export default function Home() :JSX.Element {
-  return (
-    <div className="text-2xl bg-red">
-      HI THERE
-    </div>
-  )}
+export default function(){
+    return<>
+<Appbar/>    </>
+}
