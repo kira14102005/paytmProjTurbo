@@ -1,6 +1,7 @@
 "use server"
-import { PrismaClient } from "@repo/myDB/clients";
-const prisma = new PrismaClient();
+
+import prisma from "@repo/myDB/clients";
+
 
 export async function registerUser(data) {
   const { name, email, password } = data;

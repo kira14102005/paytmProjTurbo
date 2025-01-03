@@ -1,7 +1,14 @@
-import { PrismaClient } from "@repo/myDB/clients";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "../db";
+import zod from "zod"
+import bcrypt from 'bcrypt'
+import prisma from "@repo/myDB/clients";
+import { use } from "react";
+const signInschema = zod.object({
+    email: zod.string().email(),
+    password: zod.string().min(6)
+})
+
 export const NEXTAUTH = {
     providers: [CredentialsProvider({
         name: "Credentials",
@@ -12,39 +19,45 @@ export const NEXTAUTH = {
             }
         },
         async authorize(credentials: any) {
-            console.log(credentials)
+            const { success } = signInschema.safeParse(credentials);
+            if (!success){
+                console.error("ZOD FAILED");
+                 return null;}
+            const hasedPass = await bcrypt.hash(credentials.password, 10) //HASHING THE PASSWORD
             try {
-
-
                 const user = await prisma.user.findFirst({
                     where: {
                         email: credentials.email,
-                        password: credentials.password,
                     }
                 })
                 console.log(user)
                 if (user) {
-                    return {
-                        id: user.id.toString(),
-                        name: user.name,
-                        email: user.email
+                    const passwordValidation = await bcrypt.compare(hasedPass, user.password);
+                    if (passwordValidation) {
+                        return {
+                            id: user.id.toString(),
+                            email: user.email
+                        }
                     }
+                    console.log("PASSWORD MISMATCh")
+                    return null
                 }
                 else {
+                    const res = await prisma.user.create({
+                        data: {
+                            email: credentials.email,
+                            password: hasedPass
+                        }
+                    })
                     return {
-                        id: "bad1",
-                        name: "BOGUS",
-                        email: "yshdhdnkkdsd"
+                        id: res.id.toString(),
+                        email: res.email
                     }
                 }
             }
             catch (e) {
-                console.log("ERRORvyhh")
-                return {
-                    id: "bad1",
-                    name: "BOGUS",
-                    email: "yshdhdnkkdsd"
-                }
+                console.error("ERROR")
+                return null
             }
 
         }
@@ -68,8 +81,8 @@ export const NEXTAUTH = {
         }
     }
     ,
-    pages: {
-        signIn: '/signin'      //DEFAULT PAGE TO RENDER ON SCREEN DURING NEXTAUTH
-    },
+    // pages: {
+    //     signIn: '/signin'      //DEFAULT PAGE TO RENDER ON SCREEN DURING NEXTAUTH
+    // },
     secret: process.env.NEXTAUTH_SECRET || "secret"    //SECRET JWT FROM .env file
 }

@@ -1,8 +1,8 @@
 'use client'
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { prisma } from "../db";
 import { registerUser } from "../api/registerUser";
+import prisma from "@repo/myDB/clients";
 
 export function Signup() {
     const [user, setUser] = useState({
