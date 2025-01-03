@@ -33,7 +33,7 @@ model OnRampTransac{
   id Int @id @default(autoincrement())
   userId Int @unique
   provider String
-  token String
+  token String @unique
   status onramp
   amount Int
   startTime DateTime
