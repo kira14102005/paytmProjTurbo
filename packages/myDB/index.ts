@@ -1,15 +1,14 @@
-// import { PrismaClient } from "@prisma/client";
+import {PrismaClient} from '@prisma/client'
+const prismaClientSingleton = () => {
+  return new PrismaClient()
+}
 
-export * from "@prisma/client";
-// const prisma = new PrismaClient();
-// async function main() {
-//     const user = await prisma.user.create({
-//         data: {
-//             name: "hghjzb",
-//             email: "ghgjhbbjn",
-//             password: "hbsss"
-//         }
-//     })
-//     console.log(user)
-// }
-// main();
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export default prisma
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
