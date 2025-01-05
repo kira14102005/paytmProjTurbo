@@ -3,7 +3,7 @@ import { Button, CustButton } from "@repo/ui/button";
 import { TextInput } from "@repo/ui/textinput";
 import { useEffect, useState } from "react";
 import { sendMoney } from "../../lib/actions/sendMoney";
-import { CustomAlert } from "@repo/ui/customalert";
+import { CustomAlert } from "@repo/ui/alert";
 
 export default function () {
     const [no, setNo] = useState("1111");
