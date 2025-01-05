@@ -1,13 +1,15 @@
 import { Card } from "@repo/ui/card";
 import { getServerSession } from "next-auth";
 // import { useSession } from "next-auth/react";
-import { authOptions } from "../../lib/auth";
-import prisma from "@repo/db/client";
+import { NEXTAUTH } from "../../lib/auth";
+
 import { redirect } from "next/navigation";
-import { CustomAlert } from "@repo/ui/customalert";
-import { P2pTransfer } from "../../../components/P2ptrnsfer";
+import { CustomAlert } from "@repo/ui/alert";
+import prisma from "@repo/myDB/clients";
+import { P2pTransfer } from "../../components/P2ptrnsfer";
+
 async function getRecentTransfers() {
-    const ses = await getServerSession(authOptions);
+    const ses = await getServerSession(NEXTAUTH);
     if (!ses.user && !ses.user.id) { return null; }
     const userId = ses.user.id;
     const totalTransfers = await prisma.user.findFirst({
