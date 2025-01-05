@@ -4,6 +4,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["src"],
+  "include": ["src", "../../packages/myDB/1.ts"],
   "exclude": ["node_modules", "dist"]
 }

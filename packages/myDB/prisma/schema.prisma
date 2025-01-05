@@ -1,29 +1,22 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                Int             @id @default(autoincrement())
-  email             String?         @unique
+  id                Int            @id @default(autoincrement())
+  email             String?        @unique
   name              String?
-  number            String          @unique
   password          String
-  OnRampTransaction OnRampTransac[]
-  Balance           Balance[]
-  sentTransfers     p2pTransfer[]   @relation(name: "FromuserRelautions")
-  receivedTransfers p2pTransfer[]   @relation(name: "TouserRelautions")
+  number            String         @unique
+  Balance           Balance?
+  OnRampTransaction OnRampTransac?
+  sentTransfers     p2pTransfer[]  @relation("FromuserRelautions")
+  receivedTransfers p2pTransfer[]  @relation("TouserRelautions")
 }
 
 model p2pTransfer {
@@ -31,9 +24,9 @@ model p2pTransfer {
   amount     Int
   timestamp  DateTime
   fromuserId Int
-  fromuser   User     @relation(name: "FromuserRelautions", fields: [fromuserId], references: [id])
   toUserId   Int
-  toUser     User     @relation(name: "TouserRelautions", fields: [toUserId], references: [id])
+  fromuser   User     @relation("FromuserRelautions", fields: [fromuserId], references: [id])
+  toUser     User     @relation("TouserRelautions", fields: [toUserId], references: [id])
 }
 
 model Balance {
