@@ -11,34 +11,50 @@ generator client {
 datasource db {
   provider = "postgresql"
 
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
-model User{
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String?
-  password String
-  Balance Balance[]
 
-  OnRampTransac OnRampTransac[]
+model User {
+  id                Int             @id @default(autoincrement())
+  email             String?         @unique
+  name              String?
+  number            String          @unique
+  password          String
+  OnRampTransaction OnRampTransac[]
+  Balance           Balance[]
+  sentTransfers     p2pTransfer[]   @relation(name: "FromuserRelautions")
+  receivedTransfers p2pTransfer[]   @relation(name: "TouserRelautions")
 }
-model Balance{
-    id Int @id @default(autoincrement())
-amount Int @default(0)
-userId Int @unique
-locked Int
-user User @relation(fields: [userId] , references: [id]) 
+
+model p2pTransfer {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  timestamp  DateTime
+  fromuserId Int
+  fromuser   User     @relation(name: "FromuserRelautions", fields: [fromuserId], references: [id])
+  toUserId   Int
+  toUser     User     @relation(name: "TouserRelautions", fields: [toUserId], references: [id])
 }
-model OnRampTransac{
-  id Int @id @default(autoincrement())
-  userId Int @unique
-  provider String
-  token String @unique
-  status onramp
-  amount Int
+
+model Balance {
+  id     Int  @id @default(autoincrement())
+  amount Int  @default(0)
+  userId Int  @unique
+  locked Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model OnRampTransac {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  provider  String
+  token     String   @unique
+  status    onramp
+  amount    Int
   startTime DateTime
-user User @relation(fields: [userId] , references: [id]) 
+  user      User     @relation(fields: [userId], references: [id])
 }
+
 enum onramp {
   Failed
   Success
