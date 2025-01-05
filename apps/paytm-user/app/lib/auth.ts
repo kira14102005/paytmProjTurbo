@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import prisma from "@repo/myDB/clients";
 import { use } from "react";
 const signInschema = zod.object({
-    email: zod.string().email(),
+    number: zod.string().length(10),
     password: zod.string().min(6)
 })
 
@@ -13,7 +13,7 @@ export const NEXTAUTH = {
     providers: [CredentialsProvider({
         name: "Credentials",
         credentials: {
-            email: { label: 'Email', type: "text", placeholder: "enter your email" },
+            number: { label: 'number', type: "text", placeholder: "enter your number" },
             password: {
                 label: "Password", type: "password", placeholder: "Enter your password"
             }
@@ -27,7 +27,7 @@ export const NEXTAUTH = {
             try {
                 const user = await prisma.user.findFirst({
                     where: {
-                        email: credentials.email,
+                        number: credentials.number,
                     }
                 })
                 console.log(user)
@@ -36,7 +36,7 @@ export const NEXTAUTH = {
  const passwordValidation = await bcrypt.compare(credentials.password, user.password);                    if (passwordValidation) {
                         return {
                             id: user.id.toString(),
-                            email: user.email
+                            number: user.number
                         }
                     }
                     console.error("PASSWORD MISMATCh")
@@ -45,13 +45,13 @@ export const NEXTAUTH = {
                 else {
                     const res = await prisma.user.create({
                         data: {
-                            email: credentials.email,
+                            number: credentials.number,
                             password: hasedPass
                         }
                     })
                     return {
                         id: res.id.toString(),
-                        email: res.email
+                        number: res.number
                     }
                 }
             }
@@ -64,7 +64,7 @@ export const NEXTAUTH = {
     })],
     callbacks: {
         signIn: ({ user }) => {
-            if (user.email == "kutta.com") return false;
+            if (user.number == "kutta.com") return false;
             return true;
         }
         ,
