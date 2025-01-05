@@ -7,10 +7,11 @@ import { redirect } from "next/navigation";
 import { CustomAlert } from "@repo/ui/alert";
 import prisma from "@repo/myDB/clients";
 import { P2pTransfer } from "../../components/P2ptrnsfer";
+import RedirectWithDelay from "../../components/Redirect";
 
 async function getRecentTransfers() {
     const ses = await getServerSession(NEXTAUTH);
-    if (!ses.user && !ses.user.id) { return null; }
+    if (!ses || !ses.user) { return null; }
     const userId = ses.user.id;
     const totalTransfers = await prisma.user.findFirst({
         where: {
@@ -23,12 +24,18 @@ async function getRecentTransfers() {
     console.log(totalTransfers)
     return totalTransfers
 }
+// async function redirectToLogin() {
+//     setTimeout(()=>{
+//     }, 4000)
+    
+// }
 export default async function () {
     const record = await getRecentTransfers();
     if (!record) {
-        setTimeout(() => { redirect('/api/auth/signin') }, 4000)
-        return <>
+           
+            return <>
             <CustomAlert slogan="Failed" info="You are not logged in" />
+            <RedirectWithDelay/>
         </>
     }
     return <>
