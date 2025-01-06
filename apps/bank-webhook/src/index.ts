@@ -11,22 +11,27 @@ app.listen(port, () => {
 });
 
 app.post('/webhook', async (req, res) => {
-    const paymentInfo = {
+    const paymentInfo: {
+        token: string;
+        userId: string;
+        amount: string
+    } = {
         token: req.body.token,
-        userId: req.body.user,
-        amount: req.body.amount,
+        userId: req.body.userInfo,
+        amount: req.body.amount
     };
 
     try {
-        // Validate inputs
         if (!paymentInfo.token || !paymentInfo.userId || !paymentInfo.amount) {
-            return res.status(400).json({ error: 'Invalid input data' });
+            res.status(400).json({ error: 'Invalid input data' });   //ERROR HERE can not return res.json()
         }
+        // Validate inputs
+
 
         await prisma.$transaction([
             prisma.balance.update({
                 where: {
-                    userId: paymentInfo.userId,
+                    userId: Number(paymentInfo.userId),
                 },
                 data: {
                     amount: {
