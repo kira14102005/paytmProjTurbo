@@ -6,7 +6,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate"  : "cd packages/myDB && npx prisma generate && cd ../../"
+    "db:generate"  : "cd packages/myDB && npx prisma generate && cd ../../",
+    "start-paytm-user" : "cd apps/paytm-user && npm run start && cd ../../" 
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

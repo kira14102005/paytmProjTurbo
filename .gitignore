@@ -6,8 +6,7 @@ node_modules
 .pnp.js
 
 #Personal Files
-Learnings.txt
-dbseed.png
+learnings
 # Local env files
 .env
 .env.local
