@@ -1,10 +1,11 @@
 
 import { getServerSession } from "next-auth";
-import {  NEXTAUTH } from "../../lib/auth";
+
 import prisma from "@repo/myDB/clients";
 import { OnRampTransactions } from "../../components/OnRampTransactions";
 import { BalanceCard } from "../../components/BalanceCard";
 import { AddMoney } from "../../components/AddMoneyCard";
+import { NEXTAUTH } from "../../lib/auth";
 
 interface Transaction {
     startTime: Date; // or Date if appropriate

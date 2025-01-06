@@ -1,7 +1,7 @@
 "use server"        //SERVER ACTIONS
 import { getServerSession } from "next-auth"
-import { NEXTAUTH } from "../auth"
 import prisma from "@repo/myDB/clients"
+import { NEXTAUTH } from "../auth";
 
 export async function createOnRamp(provider : string , amount  : number ){
 const sess = await getServerSession(NEXTAUTH);

@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth"
-import { NEXTAUTH } from "./lib/auth"
 import { redirect } from "next/navigation";
-
+import { NEXTAUTH } from "./lib/auth";
 
 export default async function () {
     const ses = await getServerSession(NEXTAUTH) ;
