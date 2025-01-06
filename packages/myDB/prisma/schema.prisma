@@ -14,7 +14,7 @@ model User {
   password          String
   number            String         @unique
   Balance           Balance?
-  OnRampTransaction OnRampTransac?
+  OnRampTransaction OnRampTransac[]
   sentTransfers     p2pTransfer[]  @relation("FromuserRelautions")
   receivedTransfers p2pTransfer[]  @relation("TouserRelautions")
 }
@@ -38,16 +38,15 @@ model Balance {
 }
 
 model OnRampTransac {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @unique
-  provider  String
-  token     String   @unique
+  id        Int          @id @default(autoincrement())
   status    onramp
+  token     String       @unique
+  provider  String
   amount    Int
   startTime DateTime
-  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  user      User         @relation(fields: [userId], references: [id])
 }
-
 enum onramp {
   Failed
   Success
